@@ -1,0 +1,61 @@
+---
+title: "Statistical Inference Project Part 2"
+author: "Jing Wei Chan"
+date: "24 August 2015"
+output: html_document
+---
+
+## Overview
+
+In the second portion of the project, we are going to analyze the ToothGrowth data in the R datasets package. 
+
+## 1. Load the ToothGrowth data and perform some basic exploratory data analyses.
+
+```{r}
+library(datasets)
+toothgrowth <- ToothGrowth
+library(ggplot2)
+ggplot(data = toothgrowth, aes(x = as.factor(dose), y = len, fill = supp)) +
+    geom_bar(stat = "identity",) +
+    facet_grid(. ~ supp) +
+    xlab("Dose in Milligrams") +
+    ylab("Tooth Length") +
+    guides(fill = guide_legend(title="Supplement Type"))
+```
+
+As shown, there is a positive relationship between dose and tooth length for both OJ and VC supplement types.
+
+## 2. Provide a basic summary of the data.
+
+```{r}
+summary(toothgrowth)
+```
+
+## 3. Use confidence intervals and/or hypothesis tests to compare tooth growth by supp and dose.
+
+We will analyze tooth growth by carrying out t-tests at 95% confidence intervals for the 2 supplements by dosage level.
+
+```{r}
+t.test(len ~ supp, toothgrowth[toothgrowth$dose == 0.5, ])
+```
+
+At a 0.5 milligram dose, the null hypothesis is rejected as zero does not fall within the confidence interval and p-value < 0.05.
+
+```{r}
+t.test(len ~ supp, toothgrowth[toothgrowth$dose == 1, ])
+```
+
+At a 1 milligram dose, the null hypothesis is rejected as zero does not fall within the confidence interval and p-value < 0.05.
+
+```{r}
+t.test(len ~ supp, toothgrowth[toothgrowth$dose == 2, ])
+```
+
+At a 2 milligrams dose, the null hypothesis is not rejected as zero falls within the confidence interval and p-value > 0.05.
+
+## 4. State your conclusions and the assumptions needed for your conclusions. 
+
+From the exploratory analysis, we can see that there is a positive relationship between dose and tooth length for both OJ and VC supplement types.
+
+From the t-tests, we can conclude that for 0.5 milligram and 1 milligram, OJ is more effective than VC in promoting tooth growth. However, for 1 milligram dose, we are unable to conclude that OJ is more effective than VC.
+
